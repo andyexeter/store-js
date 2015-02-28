@@ -1,6 +1,6 @@
 /*!
 	store.js v0.9
-	A lightweight browser storage wrapper
+	A lightweight JavaScript browser storage wrapper
 	(c) 2015 Andy Palmer
 	license: http://www.opensource.org/licenses/mit-license.php
 */
@@ -14,7 +14,7 @@ window.store = (function() {
 		/**
 		 *  Set the storage type (localStorage|sessionStorage)
 		 */
-		storageType: function(type) {
+		storage: function(type) {
 			
 			if(type) {		
 				storage = type;
@@ -51,8 +51,11 @@ window.store = (function() {
 			if(value) {
 			
 				if(value[0] == '{' || value[0] == '[') {
+				
 					try {
+					
 						value = JSON.parse(value);
+						
 					} catch(e) {}
 				}
 			}
@@ -61,7 +64,7 @@ window.store = (function() {
 		},
 		
 		/**
-		 *  Push an item on to the end of the object
+		 *  Push an item on to the end of an object
 		 */
 		push: function(key,  obj_key, obj_value) {
 			
