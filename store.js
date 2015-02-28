@@ -102,11 +102,20 @@ window.store = (function() {
 		
 			var value = store.get(key);
 			
-			delete value[obj_key];
+			if(typeof value != 'object') {
+				throw new Error('store.js: pop: Cannot pop from ' + key + ' (' + typeof key + ')');
+			} else {
 			
-			store.set(key, value);
-			
-			return value;
+				if(value.constructor === Array) {
+					value.pop();
+				} else {
+					delete value[obj_key];
+				}
+				
+				store.set(key, value);
+				
+				return value;
+			}
 		},
 		
 		/**
