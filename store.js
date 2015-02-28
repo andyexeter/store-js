@@ -40,7 +40,7 @@ window.store = (function() {
 		},
 		
 		/**
-		 *  Get a storage item
+		 *  Get an item from storage
 		 */
 		get: function(key) {
 		
