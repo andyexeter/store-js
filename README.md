@@ -3,7 +3,7 @@
 
 store.js is a lightweight wrapper for the HTML5 [Web Storage API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API). It allows storage of key/value pairs with any type of value, including arrays and objects
 
-### 1.Getting Started
+### 1. Getting Started
 Load the store.js or store.min.js file in your HTML page
 
 ```html
@@ -34,35 +34,63 @@ store.set('myObject', {
 ### 3. Getting data
 
 ```js
-store.get('test');
+store.get('test'); // Returns "Hello World"
 ```
-Returns `"Hello World"`
 
 ```js
-store.get('myArray');
+store.get('myArray'); // Returns ['Value 1', true, 99]
 ```
-Returns an array: `['Value 1', true, 99]`
+
 
 ```js
-store.get('myObject');
+store.get('myObject'); // Returns Object {a: true, b: false, c: 'Hello World'}
 ```
-Returns an object: `Object {a: true, b: false, c: 'Hello World'}`
 
-# Pushing to data
-Because store.js allows storage of arrays an objects, elements or properties can be pushed on to them with ease:
+
+### 4. Pushing to data
+Because store.js allows storage of arrays and objects, elements or properties can be pushed on to them with the `push` method
 
 ```js
 store.push('myObject', {d: 100});
-store.get('myObject');
+store.get('myObject'); // Returns Object {a: true, b: false, c: 'Hello World', d: 100}
 ```
-Returns an object: `Object {a: true, b: false, c: 'Hello World', d: 100}`
 
 ```js
 store.push('myArray', 'Hello World');
-store.get('myArray');
+store.get('myArray'); // Returns ["Value 1", true, 99, "Hello World"]
 ```
-Returns an array: `["Value 1", true, 99, "Hello World"]`
+
+### 5. Popping from data
+Similarly, we can remove elements from arrays and properties from objects using `pop`
+
+```js
+store.pop('myObject', 'b');
+store.get('myObject'); // Returns Object {a: true, c: 'Hello World', d: 100}
+```
+
+```js
+store.pop('myArray');
+store.get('myArray');  // Returns ["Value 1", true, 99]
+```
+
+### 6. Removing data
+Data can be removed from storage with the `remove` method:
+
+```js
+store.remove('test');
+store.remove('myArray');
+store.remove('myObject');
+```
+
+### 7. Setting the storage mechanism
+By default, store.js uses `localStorage` as the storage mechanism, meaning the data persists across different browser sessions. To change this just pass a reference to the `storage` method:
+
+```js
+store.storage(sessionStorage);
+store.set('test', 'Hello World'); // Stored in sessionStorage
+store.storage(localStorage); // Sets the mechanism back to localStorage
+```
 
 License
 ------------
-The MIT License (MIT)
+[The MIT License (MIT)](http://opensource.org/licenses/mit-license.php)
