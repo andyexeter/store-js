@@ -33,16 +33,16 @@ store.set('myObject', {
 ### 3. Getting data
 
 ```js
-store.get('test'); // Returns "Hello World"
+store.get('test'); // "Hello World"
 ```
 
 ```js
-store.get('myArray'); // Returns ['Value 1', true, 99]
+store.get('myArray'); // ['Value 1', true, 99]
 ```
 
 
 ```js
-store.get('myObject'); // Returns Object {a: true, b: false, c: 'Hello World'}
+store.get('myObject'); // {a: true, b: false, c: 'Hello World'}
 ```
 
 
@@ -53,29 +53,29 @@ Because store.js allows storage of arrays and objects, elements or properties ca
 
 ```js
 store.push('myObject', {d: 100});
-store.get('myObject'); // Returns Object {a: true, b: false, c: 'Hello World', d: 100}
+store.get('myObject'); // {a: true, b: false, c: 'Hello World', d: 100}
 ```
 
 ```js
 store.push('myObject', 'e', 'Another String');
-store.get('myObject'); // Returns Object {a: true, b: false, c: 'Hello World', d: 100, e: 'Another String'}
+store.get('myObject'); // {a: true, b: false, c: 'Hello World', d: 100, e: 'Another String'}
 ```
 
 ```js
 store.push('myObject', 'f', {foo: 'bar'});
-store.get('myObject'); // // Returns Object {a: true, b: false, c: 'Hello World', d: 100, e: 'Another String', f: Object {foo: 'bar'}}
+store.get('myObject'); // {a: true, b: false, c: 'Hello World', d: 100, e: 'Another String', f: Object {foo: 'bar'}}
 ```
 
 ```js
 store.push('myObject', 'g', [10,20,30]);
-store.get('myObject'); // // Returns Object {a: true, b: false, c: 'Hello World', d: 100, e: 'Another String', f: Object {foo: 'bar'}, g: Array[10,20,30]}
+store.get('myObject'); // {a: true, b: false, c: 'Hello World', d: 100, e: 'Another String', f: Object {foo: 'bar'}, g: Array[10,20,30]}
 ```
 
 #### Arrays
 
 ```js
 store.push('myArray', 76);
-store.get('myArray'); // Returns ["Value 1", true, 99, 76]
+store.get('myArray'); // ["Value 1", true, 99, 76]
 ```
 
 ### 5. Popping from data
@@ -83,12 +83,12 @@ Similarly, we can remove elements from arrays and properties from objects using 
 
 ```js
 store.pop('myObject', 'b');
-store.get('myObject'); // Returns Object {a: true, c: 'Hello World', d: 100}
+store.get('myObject'); // {a: true, c: 'Hello World', d: 100}
 ```
 
 ```js
 store.pop('myArray');
-store.get('myArray');  // Returns ["Value 1", true, 99]
+store.get('myArray'); // ["Value 1", true, 99]
 ```
 
 ### 6. Removing data
