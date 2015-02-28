@@ -1,5 +1,4 @@
-# store.js
->v0.9
+# store.js v0.9
 
 store.js is a lightweight wrapper for the HTML5 [Web Storage API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API). It also adds the ability to store data as an array or an object
 
@@ -29,7 +28,7 @@ store.set('myObject', {
 });
 ```
 
->Note: Properties defined as functions cannot be stored with an object because they are removed by the `JSON.stringify` method
+>Note: Properties defined as functions cannot be stored with an object because they are removed by the `JSON.stringify` method store.js uses
 
 ### 3. Getting data
 
@@ -50,14 +49,33 @@ store.get('myObject'); // Returns Object {a: true, b: false, c: 'Hello World'}
 ### 4. Pushing to data
 Because store.js allows storage of arrays and objects, elements or properties can be pushed on to them with the `push` method
 
+#### Objects
+
 ```js
 store.push('myObject', {d: 100});
 store.get('myObject'); // Returns Object {a: true, b: false, c: 'Hello World', d: 100}
 ```
 
 ```js
-store.push('myArray', 'Hello World');
-store.get('myArray'); // Returns ["Value 1", true, 99, "Hello World"]
+store.push('myObject', 'e', 'Another String');
+store.get('myObject'); // Returns Object {a: true, b: false, c: 'Hello World', d: 100, e: 'Another String'}
+```
+
+```js
+store.push('myObject', 'f', {foo: 'bar'});
+store.get('myObject'); // // Returns Object {a: true, b: false, c: 'Hello World', d: 100, e: 'Another String', f: Object {foo: 'bar'}}
+```
+
+```js
+store.push('myObject', 'g', [10,20,30]);
+store.get('myObject'); // // Returns Object {a: true, b: false, c: 'Hello World', d: 100, e: 'Another String', f: Object {foo: 'bar'}, g: Array[10,20,30]}
+```
+
+#### Arrays
+
+```js
+store.push('myArray', 76);
+store.get('myArray'); // Returns ["Value 1", true, 99, 76]
 ```
 
 ### 5. Popping from data
@@ -89,6 +107,13 @@ By default, store.js uses `localStorage` as the storage mechanism, meaning the d
 store.storage(sessionStorage);
 store.set('test', 'Hello World'); // Stored in sessionStorage
 store.storage(localStorage); // Sets the mechanism back to localStorage
+```
+
+### 8. Clearing storage
+To remove all items from the current storage mechanism store.js provides the `clear` method:
+
+```js
+store.clear(); // Clears either localStorage or sessionStorage
 ```
 
 License

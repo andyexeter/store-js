@@ -4,7 +4,7 @@
 	(c) 2015 Andy Palmer
 	license: http://www.opensource.org/licenses/mit-license.php
 */
-window.store = (function() {
+window.store = (function(localStorage) {
 	
 	// Set the default storage type to localStorage
 	var storage = localStorage;
@@ -20,7 +20,7 @@ window.store = (function() {
 				storage = type;
 			}
 			
-			return storage;
+			return (storage === localStorage ? 'local' : 'session') + 'Storage';
 		},
 		
 		/**
@@ -44,55 +44,77 @@ window.store = (function() {
 		 */
 		get: function(key) {
 		
-			if(!key) return false;
+			if(!key) {
+				return null;
+			}
 			
-			value = storage.getItem(key);
+			var item = storage.getItem(key);
 			
-			if(value) {
+			if(item) {
 			
-				if(value[0] == '{' || value[0] == '[') {
+				if(item[0] == '{' || item[0] == '[') {
 				
 					try {
 					
-						value = JSON.parse(value);
+						item = JSON.parse(item);
 						
 					} catch(e) {}
 				}
 			}
 			
-			return value;
+			return item;
 		},
 		
 		/**
 		 *  Push an item on to an object
 		 */
-		push: function(key,  obj_key, obj_value) {
+		push: function(item_key, key, value) {
 			
-			if(!obj_value) {
-				obj_value = obj_key;
-			}
-			
-			value = store.get(key);
-			
+			// Shift arguments if the third isn't set
 			if(!value) {
-				value = {};
+				value = key;
 			}
 			
-			if(typeof value == 'object') {
+			var item = store.get(item_key);
 			
-				if(value.constructor === Array) {
-					value.push(obj_value);
+			// If item is null set it to an empty object or array 
+			if(!item) {
+				item = (typeof key == 'object' || arguments.length == 3) ? {} : [];
+			}
+			
+			// We can only push to the item if it's an object/array
+			if(typeof item == 'object') {
+				
+				if(item.constructor === Array) {
+					// item is a true array, push value on to the end of it	
+					item.push(value);
+					
 				} else {
-					value[obj_key] = obj_value;
+					
+					if(arguments.length < 3) {
+						
+						store._error('push', 'Cannot push empty value to ' + item_key);
+						
+					} else if(typeof value == 'object' && value === key) {
+						
+						// item and value are both objects, extend item with value
+						for(var prop in value) {
+							item[prop] = value[prop]
+						}
+						
+					} else {
+						
+						item[key] = value;
+					}
 				}
 				
-				store.set(key, value);
+				store.set(item_key, item);
 				
 			} else {
-				throw new Error('store.js: push: Cannot push to ' + key + ' (' + typeof key + ')');
+				store._error('push', 'Cannot push to ' + item_key + ' (' + typeof item_key + ')');
 			}
 			
-			return value;
+			return item;
 		},
 		
 		/**
@@ -103,7 +125,7 @@ window.store = (function() {
 			var value = store.get(key);
 			
 			if(typeof value != 'object') {
-				throw new Error('store.js: pop: Cannot pop from ' + key + ' (' + typeof key + ')');
+				store._error('pop', 'Cannot pop from ' + key + ' (' + typeof key + ')');
 			} else {
 			
 				if(value.constructor === Array) {
@@ -124,7 +146,18 @@ window.store = (function() {
 		remove: function(key) {
 		
 			return storage.removeItem(key);
-		}
+		},
+		
+		/**
+		 *  Clear all data from the storage mechanism
+		 */
+		 clear: function() {
+			return storage.clear();
+		 },
+		 
+		 _error: function(method, message) {
+			 throw new Error('store.js: ' + method + ': ' + message);
+		 }
 	};
 	
-})();
+})(localStorage);
