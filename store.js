@@ -64,7 +64,7 @@ window.store = (function() {
 		},
 		
 		/**
-		 *  Push an item on to the end of an object
+		 *  Push an item on to an object
 		 */
 		push: function(key,  obj_key, obj_value) {
 			
@@ -73,6 +73,10 @@ window.store = (function() {
 			}
 			
 			value = store.get(key);
+			
+			if(!value) {
+				value = {};
+			}
 			
 			if(typeof value == 'object') {
 			
