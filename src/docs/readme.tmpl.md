@@ -1,4 +1,4 @@
-# store.js v0.9.5
+# store.js v<%= pkg.version %>
 
 store.js is a lightweight wrapper for the HTML5 [Web Storage API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API). It also adds the ability to store data as an array or an object
 

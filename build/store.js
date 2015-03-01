@@ -6,6 +6,8 @@
 */
 window.store = (function(localStorage) {
 	
+	'use strict';
+	
 	// Set the default storage type to localStorage
 	var storage = localStorage;
 	
@@ -20,7 +22,7 @@ window.store = (function(localStorage) {
 				storage = type;
 			}
 			
-			return (storage === localStorage ? 'local' : 'session') + 'Storage';
+			//return (storage === localStorage ? 'local' : 'session') + 'Storage';
 		},
 		
 		/**
@@ -28,7 +30,9 @@ window.store = (function(localStorage) {
 		 */
 		set: function(key, value) {
 		
-			if(!key || !value) return;
+			if(!key || !value) {
+				return;
+			}
 			
 			if(typeof value == 'object') {
 				value = JSON.stringify(value);
@@ -36,7 +40,7 @@ window.store = (function(localStorage) {
 			
 			storage.setItem(key, value);
 			
-			return value;
+			//return value;
 		},
 		
 		/**
@@ -99,7 +103,7 @@ window.store = (function(localStorage) {
 						
 						// item and value are both objects, extend item with value
 						for(var prop in value) {
-							item[prop] = value[prop]
+							item[prop] = value[prop];
 						}
 						
 					} else {
