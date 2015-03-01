@@ -29,10 +29,14 @@ module.exports = function(grunt) {
 				files: [{
 					expand: true,
 					cwd: 'src/',
-					src: '**/*.js',
+					src: ['**/*.js', 'demo.html', 'normalize.css'],
 					dest: 'build/'
 					
 				}],
+			},
+			tests: {
+				src: 'build/store.js',
+				dest: 'tests/store.js'
 			}
 		},
         concat: {
@@ -87,6 +91,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-watch');
 
-    grunt.registerTask('default', ['clean', 'jshint:build', 'copy:build', 'uglify', 'concat:readme']);
+    grunt.registerTask('default', ['clean', 'jshint:build', 'copy:build', 'uglify', 'copy:tests', 'concat:readme']);
 
 };

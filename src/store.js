@@ -1,5 +1,5 @@
 /*!
-	store.js v0.9
+	store.js v0.9.5
 	A lightweight JavaScript browser storage wrapper
 	(c) 2015 Andy Palmer
 	license: http://www.opensource.org/licenses/mit-license.php
@@ -22,17 +22,13 @@ window.store = (function(localStorage) {
 				storage = type;
 			}
 			
-			//return (storage === localStorage ? 'local' : 'session') + 'Storage';
+			return (storage === localStorage ? 'local' : 'session') + 'Storage';
 		},
 		
 		/**
 		 *  Set a key/value pair. Value can be of any type including objects/arrays
 		 */
 		set: function(key, value) {
-		
-			if(!key || !value) {
-				return;
-			}
 			
 			if(typeof value == 'object') {
 				value = JSON.stringify(value);
@@ -66,6 +62,14 @@ window.store = (function(localStorage) {
 				}
 			}
 			
+			if(+item == item) {
+				return +item;
+			} if(item == 'true') {
+				item = true;
+			} else if(item == 'false') {
+				item = false;
+			}
+			
 			return item;
 		},
 		
@@ -94,8 +98,8 @@ window.store = (function(localStorage) {
 					item.push(value);
 					
 				} else {
-					
-					if(arguments.length < 3) {
+
+					if(arguments.length < 3 && typeof value != 'object') {
 						
 						store._error('push', 'Cannot push empty value to ' + item_key);
 						
