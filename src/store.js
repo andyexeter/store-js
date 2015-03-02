@@ -1,9 +1,3 @@
-/*!
-	store.js v0.9.5
-	A lightweight JavaScript browser storage wrapper
-	(c) 2015 Andy Palmer
-	license: http://www.opensource.org/licenses/mit-license.php
-*/
 window.store = (function(localStorage) {
 	
 	'use strict';
@@ -29,13 +23,13 @@ window.store = (function(localStorage) {
 		 *  Set a key/value pair. Value can be of any type including objects/arrays
 		 */
 		set: function(key, value) {
-			
-			if(typeof value == 'object') {
-				value = JSON.stringify(value);
+
+			if(value === undefined) {
+				store.remove(key);
+			} else {
+				storage.setItem(key, JSON.stringify(value));
 			}
-			
-			storage.setItem(key, value);
-			
+
 			//return value;
 		},
 		
@@ -50,24 +44,13 @@ window.store = (function(localStorage) {
 			
 			var item = storage.getItem(key);
 			
-			if(item) {
-			
-				if(item[0] == '{' || item[0] == '[') {
+			if(item && typeof item == 'string') {
 				
-					try {
-					
-						item = JSON.parse(item);
-						
-					} catch(e) {}
-				}
-			}
-			
-			if(+item == item) {
-				return +item;
-			} if(item == 'true') {
-				item = true;
-			} else if(item == 'false') {
-				item = false;
+				try {
+
+					item = JSON.parse(item);
+
+				} catch(e) { }
 			}
 			
 			return item;
@@ -79,21 +62,21 @@ window.store = (function(localStorage) {
 		push: function(item_key, key, value) {
 			
 			// Shift arguments if the third isn't set
-			if(!value) {
+			if(arguments.length < 3) {
 				value = key;
 			}
 			
 			var item = store.get(item_key);
 			
 			// If item is null set it to an empty object or array 
-			if(!item) {
+			if(item == null) {
 				item = (typeof key == 'object' || arguments.length == 3) ? {} : [];
 			}
 			
 			// We can only push to the item if it's an object/array
 			if(typeof item == 'object') {
 				
-				if(item.constructor === Array) {
+				if(typeof item.push == 'function') {
 					// item is a true array, push value on to the end of it	
 					item.push(value);
 					
@@ -135,8 +118,9 @@ window.store = (function(localStorage) {
 			if(typeof value != 'object') {
 				store._error('pop', 'Cannot pop from ' + key + ' (' + typeof key + ')');
 			} else {
-			
-				if(value.constructor === Array) {
+				
+				// If value has a pop method it's an array
+				if(typeof value.pop == 'function') {
 					value.pop();
 				} else {
 					delete value[obj_key];
