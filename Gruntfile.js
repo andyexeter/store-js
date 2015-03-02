@@ -29,7 +29,7 @@ module.exports = function(grunt) {
 				files: [{
 					expand: true,
 					cwd: 'src/',
-					src: ['**/*.js', 'demo.html', 'normalize.css'],
+					src: ['**/*.js', 'demo.html', 'normalize.css', '!store.js'],
 					dest: 'build/'
 					
 				}],
@@ -40,6 +40,16 @@ module.exports = function(grunt) {
 			}
 		},
         concat: {
+			build: {
+				options: {
+					banner: '/*!\n\t<%= pkg.name %> v<%= pkg.version %>\n' +
+						'\t<%= pkg.description %>\n' +
+						'\t(c) <%= grunt.template.today("yyyy") %> <%= pkg.author %>\n' +
+						'\tlicense: <%= pkg.license %>\n*/\n'
+				},
+				src: 'src/store.js',
+				dest: 'build/store.js'
+			},
 			readme: {
 				options: {
 					process: true
@@ -91,6 +101,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-watch');
 
-    grunt.registerTask('default', ['clean', 'jshint:build', 'copy:build', 'uglify', 'copy:tests', 'concat:readme']);
+    grunt.registerTask('default', ['clean', 'jshint:build', 'concat:build', 'copy:build', 'uglify', 'copy:tests', 'concat:readme']);
 
 };
